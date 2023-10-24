@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import "./App.css";
+import React, { useState } from 'react';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+// import './App.css';
+
 const tasksList = [
   { id: "1", item: "Learn Japanese" },
   { id: "2", item: "Develop personal portfolio" },
@@ -15,35 +16,32 @@ function App() {
 
   function handleOnDragEnd(result) {
     const { destination, source } = result;
-    console.log("ghjgfhdgsf", result);
 
     if (!destination) return;
 
     if (source.droppableId === destination.droppableId) {
-      if (source.droppableId === "weeklytasks") {
-        const newWeeklyTasks = Array.from(weeklyTaskOrder);
+      if (source.droppableId === 'weeklytasks') {
+        const newWeeklyTasks = [...weeklyTaskOrder];
         const [reorderedItem] = newWeeklyTasks.splice(source.index, 1);
         newWeeklyTasks.splice(destination.index, 0, reorderedItem);
         setWeeklyTaskOrder(newWeeklyTasks);
       } else {
-        const newDailyTasks = Array.from(dailyTaskOrder);
-        const [reorderedItem] = newDailyTasks.splice(source.index, 0);
+        const newDailyTasks = [...dailyTaskOrder];
+        const [reorderedItem] = newDailyTasks.splice(source.index, 1);
         newDailyTasks.splice(destination.index, 0, reorderedItem);
         setDailyTaskOrder(newDailyTasks);
       }
     } else {
-      const weekList = Array.from(weeklyTaskOrder);
-      const dailyList = Array.from(dailyTaskOrder);
-      if (source.droppableId === "weeklytasks") {
-        const removed = weekList.splice(source.index, 1);
+      const weekList = [...weeklyTaskOrder];
+      const dailyList = [...dailyTaskOrder];
+
+      if (source.droppableId === 'weeklytasks') {
+        const [removed] = weekList.splice(source.index, 1);
         dailyList.splice(destination.index, 0, removed);
         setWeeklyTaskOrder(weekList);
         setDailyTaskOrder(dailyList);
-
-        // console.log("njfre", dailyList)
-        // console.log("uitrt", weekList)
       } else {
-        const removed = dailyList.splice(source.index, 1);
+        const [removed] = dailyList.splice(source.index, 1);
         weekList.splice(destination.index, 0, removed);
         setWeeklyTaskOrder(weekList);
         setDailyTaskOrder(dailyList);
@@ -52,13 +50,13 @@ function App() {
   }
 
   return (
-    <div className="tasker">
+    <div className='tasker'>
       <DragDropContext onDragEnd={handleOnDragEnd}>
-        <div className="container">
-          <Droppable droppableId="weeklytasks">
+        <div className='container'>
+          <Droppable droppableId='weeklytasks'>
             {(provided) => (
               <div
-                className="weeklybox"
+                className='weeklybox'
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
@@ -68,7 +66,7 @@ function App() {
                     <Draggable key={id} draggableId={id} index={index}>
                       {(provided) => (
                         <h5
-                          className="task"
+                          className='task'
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
@@ -84,10 +82,10 @@ function App() {
             )}
           </Droppable>
 
-          <Droppable droppableId="dailytasks">
+          <Droppable droppableId='dailytasks'>
             {(provided) => (
               <div
-                className="dailybox"
+                className='dailybox'
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
@@ -97,7 +95,7 @@ function App() {
                     <Draggable key={id} draggableId={id} index={index}>
                       {(provided) => (
                         <h5
-                          className="task"
+                          className='task'
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
@@ -117,4 +115,5 @@ function App() {
     </div>
   );
 }
+
 export default App;
